@@ -1,4 +1,5 @@
 use volatile::Volatile;
+use core::fmt;
 
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -76,6 +77,18 @@ impl Writer { //implement writing functions for Writer
     }
 
     fn newLine(&mut self) {
+        for row in 1..BUFFER_HEIGHT {
+            for col in 0..BUFFER_WIDTH {
+                let character = self.buffer.chars[row][col].read();
+                self.buffer.chars[row - 1][col].write(character);
+            }
+        }
+
+        self.clearRow(BUFFER_HEIGHT - 1);
+        self.columnPosition = 0;
+    }
+
+    fn clearRow(&mut self, row: usize) {
         
     }
 
@@ -90,8 +103,17 @@ impl Writer { //implement writing functions for Writer
     }
 }
 
+impl fmt::Write for Writer {
+    fn write_str(&mut self, s: &str) -> fmt::Result {
+        self.writeString(s);
+        Ok(())
+    }
+}
+
 //prints to a line
 pub fn printr() {
+    use core::fmt::Write; //use the formatted writer
+    
     let mut writer = Writer {
         columnPosition: 0,
         colorCode: ColorCode::new(Color::Green, Color::Black),
@@ -99,6 +121,6 @@ pub fn printr() {
     };
 
     writer.writeByte(b'H');
-    writer.writeString("ello ");
-    writer.writeString("World!");
+    writer.writeString("ello! ");
+    write!(writer, "The numbers are {} and {}.", 42, 1.0/3.0).unwrap();
 }
