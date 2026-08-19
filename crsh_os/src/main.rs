@@ -80,7 +80,5 @@ pub extern "C" fn _start() -> ! { //custom entry point
 
 #[test_case]
 fn trivialAssertion() {
-    serialPrintr!("Trivial assertion... ");
     assert_eq!(1, 1);
-    serialLnprintr!("[OK]");
 }
