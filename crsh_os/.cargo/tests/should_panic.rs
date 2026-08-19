@@ -1,20 +1,24 @@
 #![feature(custom_test_frameworks)]
 #![test_runner(test_runner)]
-#![reexport_test_harness_main = "testMain"]
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
-    testMain();
+    shouldFail();
+    serialLnprintr!("[Test did not panic.]");
+    exitQemu(QemuExitCode::Failure);
 
     loop {}
 }
 
-pub fn test_runner(tests: &[&dyn Fn()]) {
-    serialLnprintr!("Running {} tests.", tests.len());
-    for test in tests {
-        test();
-        serialLnprintr!("[Test did not panic.]");
-        exitQemu(QemuExitCode::Failure);
-    }
+fn shouldFail() {
+    serialLnprintr!("Should panic and fail...\t");
+    assert_eq!(0, 1);
+}
+
+#[panic_handler]
+fn panic(_info: &PanicInfo) -> ! {
+    serialLnprintr!("[OK]");
     exitQemu(QemuExitCode::Success);
+
+    loop {}
 }
