@@ -19,7 +19,7 @@ fn panic(info: &PanicInfo) -> ! {
 
 #[cfg(test)]
 pub fn test_runner(tests: &[&dyn Fn()]) {
-    lnprintr!("Running {} tests.", tests.len());
+    serialLnprintr!("Running {} tests.", tests.len());
     for test in tests {
         test();
     }
@@ -55,7 +55,7 @@ pub extern "C" fn _start() -> ! { //custom entry point
 
 #[test_case]
 fn trivialAssertion() {
-    printr!("Trivial assertion... ");
+    serialPrintr!("Trivial assertion... ");
     assert_eq!(1, 1);
-    lnprintr!("[OK]");
+    serialLnprintr!("[OK]");
 }
