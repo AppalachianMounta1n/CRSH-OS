@@ -28,11 +28,25 @@ fn panic(info: &PanicInfo) -> ! {
     
     loop {}
 }
+
+//trait to make auto-printing tests easier
+pub trait Testable {
+    fn run(&self) -> ();
+}
+
+impl<T> Testable for T where T: Fn(), {
+    fn run(&self) {
+        serialPrintr!("{}...\t", core::any::type_name::<T>());
+        self();
+        serialLnprintr!("[OK]");
+    }
+}
+
 #[cfg(test)]
-pub fn test_runner(tests: &[&dyn Fn()]) {
+pub fn test_runner(tests: &[&dyn Testable]) {
     serialLnprintr!("Running {} tests.", tests.len());
     for test in tests {
-        test();
+        test.run();
     }
 
     exitQemu(QemuExitCode::Success); //exit Qemu after running tests
