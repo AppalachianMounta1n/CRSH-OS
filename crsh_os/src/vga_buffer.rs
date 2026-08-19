@@ -93,7 +93,7 @@ pub fn printr() {
     let mut writer = Writer {
         columnPosition: 0,
         colorCode: ColorCode::new(Color::Green, Color::Black),
-        buffer: unsafe { &mut *(0xb800 as *mut Buffer) },
+        buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
     };
 
     writer.writeByte(b'H');
