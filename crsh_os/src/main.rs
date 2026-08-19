@@ -22,6 +22,24 @@ pub fn test_runner(tests: &[&dyn Fn()]) {
     for test in tests {
         test();
     }
+
+    exitQemu(QemuExitCode::Success); //exit Qemu after running tests
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(u32)]
+pub enum QemuExitCode {
+    Success = 0x10,
+    Failure = 0x11,
+}
+
+pub fn exitQemu(exitCode: QemuExitCode) { //exit Qemu with custom exit codes
+    use x86_64::instructions::port::Port;
+
+    unsafe {
+        let mut port = Port::new(0xf4);
+        port.write(exitCode as u32);
+    }
 }
 
 #[unsafe(no_mangle)]
