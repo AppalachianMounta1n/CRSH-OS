@@ -1,6 +1,6 @@
 # CRSH-OS
 Crsh OS is a Rust-based minimal OS. Development was performed using the following guide: https://os.phil-opp.com/freestanding-rust-binary/
-Current Guide Page: https://os.phil-opp.com/testing/
+Current Guide Page: https://os.phil-opp.com/cpu-exceptions/
 
 ## Bootloader
 
