@@ -5,3 +5,10 @@ edition = "2024"
 authors = ["Lily 'Appalachian' Gross (lilybethgross@gmail.com)"]
 
 [dependencies]
+
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
