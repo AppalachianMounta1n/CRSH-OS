@@ -33,3 +33,10 @@ pub extern "C" fn _start() -> ! { //custom entry point
 
     loop {}
 }
+
+#[test_case]
+fn trivialAssertion() {
+    printr!("Trivial assertion... ");
+    assert_eq!(1, 1);
+    lnprintr!("[OK]");
+}
