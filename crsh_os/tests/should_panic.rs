@@ -1,5 +1,8 @@
-#![feature(custom_test_frameworks)]
-#![test_runner(test_runner)]
+#![no_std]
+#![no_main]
+
+use core::panic::PanicInfo;
+use crsh_os::{exitQemu, serialPrintr, serialLnprintr, QemuExitCode};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
