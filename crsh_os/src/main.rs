@@ -5,6 +5,7 @@
 #![reexport_test_harness_main = "testMain"] //rename test main fn
 
 use core::panic::PanicInfo;
+use crsh_os::lnprintr;
 
 mod vga_buffer; //import custom vga buffer module
 mod serial; //import custom serial module
@@ -18,54 +19,11 @@ fn panic(info: &PanicInfo) -> ! {
     loop {}
 }
 
-//called on test panic
-#[cfg(test)] //non-test panic handler
+//test panic handler
+#[cfg(test)]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    serialLnprintr!("[Failed]\n");
-    serialLnprintr!("Error: {}\n", info);
-    exitQemu(QemuExitCode::Failure);
-    
-    loop {}
-}
-
-//trait to make auto-printing tests easier
-pub trait Testable {
-    fn run(&self) -> ();
-}
-
-impl<T> Testable for T where T: Fn(), {
-    fn run(&self) {
-        serialPrintr!("{}...\t", core::any::type_name::<T>());
-        self();
-        serialLnprintr!("[OK]");
-    }
-}
-
-#[cfg(test)]
-pub fn test_runner(tests: &[&dyn Testable]) {
-    serialLnprintr!("Running {} tests.", tests.len());
-    for test in tests {
-        test.run();
-    }
-
-    exitQemu(QemuExitCode::Success); //exit Qemu after running tests
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(u32)]
-pub enum QemuExitCode {
-    Success = 0x10,
-    Failure = 0x11,
-}
-
-pub fn exitQemu(exitCode: QemuExitCode) { //exit Qemu with custom exit codes
-    use x86_64::instructions::port::Port;
-
-    unsafe {
-        let mut port = Port::new(0xf4);
-        port.write(exitCode as u32);
-    }
+    crsh_os::testPanicHandler(info)
 }
 
 #[unsafe(no_mangle)]
@@ -74,7 +32,7 @@ pub extern "C" fn _start() -> ! { //custom entry point
 
     #[cfg(test)]
     testMain();
-
+    
     loop {}
 }
 
