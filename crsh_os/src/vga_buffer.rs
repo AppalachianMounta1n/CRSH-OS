@@ -143,3 +143,26 @@ pub fn _print(args: fmt::Arguments) {
     use core::fmt::Write;
     WRITER.lock().write_fmt(args).unwrap();
 }
+
+#[test_case]
+fn testLnprintrSimple() {
+    lnprintr!("Simple lnprintr test output.");
+}
+
+#[test_case]
+fn testLnprintrMany() {
+    for _ in 0..200 {
+        lnprintr!("Test lnprintr outputting many times.");
+    }
+}
+
+#[test_case]
+fn testLnprintrOutput() { //test that output actually appears on screen
+    let s = "Test string on a single line.";
+    lnprintr!("{}", s);
+
+    for (i, c) in s.chars().enumerate() {
+        let screenChar = WRITER.lock().buffer.chars[BUFFER_HEIGHT - 2][i].read();
+        assert_eq!(char::from(screenChar.asciiCharacter), c);
+    }
+}
