@@ -7,9 +7,6 @@
 use core::panic::PanicInfo;
 use crsh_os::lnprintr;
 
-mod vga_buffer; //import custom vga buffer module
-mod serial; //import custom serial module
-
 //called on panic
 #[cfg(not(test))] //non-test panic handler
 #[panic_handler]
