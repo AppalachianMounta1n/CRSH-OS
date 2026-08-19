@@ -1,3 +1,5 @@
+use volatile::Volatile;
+
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u8)]
@@ -42,7 +44,7 @@ const BUFFER_WIDTH: usize = 80;
 
 #[repr(transparent)]
 struct Buffer { //define buffer for the character
-    chars: [[ScreenChar; BUFFER_WIDTH]; BUFFER_HEIGHT],
+    chars: [[Volatile<ScreenChar>; BUFFER_WIDTH]; BUFFER_HEIGHT],
 }
 
 pub struct Writer { //define the writer to write to the last line and shift up when full
@@ -64,10 +66,10 @@ impl Writer { //implement writing functions for Writer
                 let col = self.columnPosition;
 
                 let colorCode = self.colorCode;
-                self.buffer.chars[row][col] = ScreenChar {
+                self.buffer.chars[row][col].write(ScreenChar {
                     asciiCharacter: byte,
                     colorCode,
-                };
+                });
                 self.columnPosition += 1;
             }
         }
