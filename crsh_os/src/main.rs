@@ -7,6 +7,7 @@
 use core::panic::PanicInfo;
 
 mod vga_buffer; //import custom vga buffer module
+mod serial; //import custom serial module
 
 //called on panic
 #[panic_handler]
