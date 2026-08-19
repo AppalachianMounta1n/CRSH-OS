@@ -36,7 +36,6 @@ fn panic(info: &PanicInfo) -> ! {
     testPanicHandler(info)
 }
 
-#[cfg(test)]
 pub fn test_runner(tests: &[&dyn Testable]) {
     serialLnprintr!("Running {} tests.", tests.len());
     for test in tests {
