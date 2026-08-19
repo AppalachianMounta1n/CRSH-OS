@@ -89,7 +89,14 @@ impl Writer { //implement writing functions for Writer
     }
 
     fn clearRow(&mut self, row: usize) {
-        
+        let blank = ScreenChar {
+            asciiCharacter: b' ',
+            colorCode: self.colorCode,
+        };
+
+        for col in 0..BUFFER_WIDTH {
+            self.buffer.chars[row][col].write(blank);
+        }
     }
 
     pub fn writeString(&mut self, s: &str) {
