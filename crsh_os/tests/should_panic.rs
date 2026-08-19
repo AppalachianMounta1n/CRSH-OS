@@ -14,7 +14,7 @@ pub extern "C" fn _start() -> ! {
 }
 
 fn shouldFail() {
-    serialLnprintr!("Should panic and fail...\t");
+    serialPprintr!("Should panic and fail...\t");
     assert_eq!(0, 1);
 }
 
