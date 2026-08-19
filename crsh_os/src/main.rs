@@ -17,7 +17,7 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 #[cfg(test)]
-pub fn testRunner(tests: &[&dyn Fn()]) {
+pub fn test_runner(tests: &[&dyn Fn()]) {
     lnprintr!("Running {} tests.", tests.len());
     for test in tests {
         test();
