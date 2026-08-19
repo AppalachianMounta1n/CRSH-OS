@@ -7,13 +7,16 @@ mod vga_buffer; //import custom vga buffer module
 
 //called on panic
 #[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
+fn panic(info: &PanicInfo) -> ! {
+    lnprintr!("{}", info); //print panic info to VGA buffer
+    
     loop {}
 }
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! { //custom entry point
     lnprintr!("Hello World{}", "!");
+    panic!("UH OH SPAGHETTI-Os!");
 
     loop {}
 }
