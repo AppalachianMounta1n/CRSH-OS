@@ -10,6 +10,7 @@ mod vga_buffer; //import custom vga buffer module
 mod serial; //import custom serial module
 
 //called on panic
+#[cfg(not(test))] //non-test panic handler
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     lnprintr!("{}", info); //print panic info to VGA buffer
@@ -17,6 +18,16 @@ fn panic(info: &PanicInfo) -> ! {
     loop {}
 }
 
+//called on test panic
+#[cfg(test)] //non-test panic handler
+#[panic_handler]
+fn panic(info: &PanicInfo) -> ! {
+    serialLnprintr!("[Failed]\n");
+    serialLnprintr!("Error: {}\n", info);
+    exitQemu(QemuExitCode::Failed);
+    
+    loop {}
+}
 #[cfg(test)]
 pub fn test_runner(tests: &[&dyn Fn()]) {
     serialLnprintr!("Running {} tests.", tests.len());
