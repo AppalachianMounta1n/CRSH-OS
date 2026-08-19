@@ -1,5 +1,5 @@
-#![no_std]
-#![no_main]
+#![no_std] //don't include std library
+#![no_main] //disable standard entrypoint
 
 use core::panic::PanicInfo;
 

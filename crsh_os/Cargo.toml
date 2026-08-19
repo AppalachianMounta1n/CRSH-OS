@@ -12,3 +12,8 @@ panic = "abort"
 
 [profile.release]
 panic = "abort"
+
+[[bin]]
+name = "crsh_os"
+test = false
+bench = false
