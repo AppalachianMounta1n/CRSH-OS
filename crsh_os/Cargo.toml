@@ -28,4 +28,5 @@ bench = false
 
 [package.metadata.bootimage]
 test-args = ["-device", "isa-debug-exit,iobase=0xf4,iosize=0x04", "-serial", "stdio", "-display", "none"] #allow easier exiting of Qemu
-test-success-exit-code = 33 # (0x10 << 1) | 1, this is the successful test code for Qemu closing
+test-success-exit-code = 33 #(0x10 << 1) | 1, this is the successful test code for Qemu closing
+test-timeout = 300 #timeout after 300 seconds
