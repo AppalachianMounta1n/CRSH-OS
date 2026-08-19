@@ -120,7 +120,7 @@ impl fmt::Write for Writer {
 }
 
 lazy_static! {
-    pub static WRITER: Mutex<Writer> = Mutex::new(Writer {
+    pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
         columnPosition: 0,
         colorCode: ColorCode::new(Color::Green, Color::Black),
         buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
