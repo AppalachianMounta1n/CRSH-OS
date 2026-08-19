@@ -15,7 +15,10 @@ static HELLO: &[u8] = b"Hello World!";
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! { //custom entry point
-    vga_buffer::printr();
+    use core::fmt::Write;
+
+    vga_buffer::WRITER.lock().write_str("Hello! ").unwrap();
+    write!(vga_buffer::WRITER.lock(), "Some numbers: {} {}", 42, 1.337).unwrap();
 
     loop {}
 }

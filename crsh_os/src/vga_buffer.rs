@@ -1,5 +1,7 @@
 use volatile::Volatile;
 use core::fmt;
+use lazy_static::lazy_static;
+use spin::Mutex;
 
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -117,17 +119,10 @@ impl fmt::Write for Writer {
     }
 }
 
-//prints to a line
-pub fn printr() {
-    use core::fmt::Write; //use the formatted writer
-    
-    let mut writer = Writer {
+lazy_static! {
+    pub static WRITER: Mutex<Writer> = Mutex::new(Writer {
         columnPosition: 0,
         colorCode: ColorCode::new(Color::Green, Color::Black),
         buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
-    };
-
-    writer.writeByte(b'H');
-    writer.writeString("ello! ");
-    write!(writer, "The numbers are {} and {}.", 42, 1.0/3.0).unwrap();
+    });
 }
