@@ -2,5 +2,6 @@
 name = "crsh_os"
 version = "0.1.0"
 edition = "2024"
+authors = ["Lily 'Appalachian' Gross (lilybethgross@gmail.com)"]
 
 [dependencies]
