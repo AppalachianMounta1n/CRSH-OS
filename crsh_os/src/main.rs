@@ -2,6 +2,7 @@
 #![no_main] //disable standard entrypoint
 #![feature(custom_test_frameworks)] //use custom test frameworks
 #![test_runner(crate::test_runner)] //use test_runner crate for testing framework
+#![reexport_test_harness_main = "testMain"] //rename test main fn
 
 use core::panic::PanicInfo;
 
@@ -16,7 +17,7 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 #[cfg(test)]
-pub fn test_runner(tests: &[&dyn Fn()]) {
+pub fn testRunner(tests: &[&dyn Fn()]) {
     lnprintr!("Running {} tests.", tests.len());
     for test in tests {
         test();
@@ -26,7 +27,9 @@ pub fn test_runner(tests: &[&dyn Fn()]) {
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! { //custom entry point
     lnprintr!("Hello World{}", "!");
-    panic!("UH OH SPAGHETTI-Os!");
+
+    #[cfg(test)]
+    testMain();
 
     loop {}
 }
