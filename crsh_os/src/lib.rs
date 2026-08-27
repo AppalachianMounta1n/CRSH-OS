@@ -75,3 +75,12 @@ pub fn exitQemu(exitCode: QemuExitCode) { //exit Qemu with custom exit codes
 pub fn init() { //initialize idt code-wide
     interrupts::init_idt();
 }
+
+//cargo test --lib entrypoint
+#[cfg(test)]
+#[unsafe(no_mangle)]
+pub extern "C" fn _start() -> ! {
+    init();
+    test_main();
+    loop {}
+}

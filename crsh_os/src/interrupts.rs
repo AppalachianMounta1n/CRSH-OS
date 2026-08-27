@@ -17,3 +17,9 @@ pub fn init_idt() { //initialize interrupt descriptor table
 extern "x86-interrupt" fn breakpointHandler(stackFrame: InterruptStackFrame) {
     lnprintr!("EXCEPTION: BREAKPOINT\n{:#?}", stackFrame);
 }
+
+#[test_case] //test breakpoint exception
+fn testBreakpointException() {
+    //invoke breakpoint exception
+    x86_64::instructions::interrupts::int3();
+}
