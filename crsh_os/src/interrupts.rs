@@ -1,10 +1,13 @@
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 use crate::lnprintr;
 
+static mut IDT: InterruptDescriptorTable = InterruptDescriptorTable::new();
+
 pub fn init_idt() { //initialize interrupt descriptor table
-    let mut idt = InterruptDescriptorTable::new();
-    idt.breakpoint.set_handler_fn(breakpointHandler);
-    idt.load(); //load interrupt descriptor table
+    unsafe { //this is not a good way to do it but it works probably
+        IDT.breakpoint.set_handler_fn(breakpointHandler);
+        IDT.load(); //load interrupt descriptor table
+    }
 }
 
 extern "x86-interrupt" fn breakpointHandler(stackFrame: InterruptStackFrame) {
