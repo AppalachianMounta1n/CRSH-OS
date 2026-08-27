@@ -8,6 +8,7 @@ use core::panic::PanicInfo;
 
 pub mod vga_buffer; //import custom vga buffer module
 pub mod serial; //import custom serial module
+pub mod interrupts; //import custom interrupts module
 
 //trait to make auto-printing tests easier
 pub trait Testable {
