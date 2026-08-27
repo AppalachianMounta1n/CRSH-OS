@@ -27,9 +27,15 @@ fn panic(info: &PanicInfo) -> ! {
 pub extern "C" fn _start() -> ! { //custom entry point
     lnprintr!("Hello World{}", "!");
 
+    crash_os::init(); //initialize OS lib
+
+    //invoke breakpoint exception
+    x86_64::instructions::interrupts::int3();
+    
     #[cfg(test)]
     testMain();
-    
+
+    lnprintr!("It didn't crash!");
     loop {}
 }
 
