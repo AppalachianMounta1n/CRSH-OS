@@ -71,3 +71,7 @@ pub fn exitQemu(exitCode: QemuExitCode) { //exit Qemu with custom exit codes
         port.write(exitCode as u32);
     }
 }
+
+pub fn init() { //initialize idt code-wide
+    interrupts::init_idt();
+}
